@@ -1,0 +1,62 @@
+{% extends "auctions/layout.html" %} {% block body %}
+
+<section class="bg-white dark:bg-gray-900 pt-[10vh]">
+  <div class="container px-6 py-10 mx-auto">
+    <h1
+      class="text-3xl text-center font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white text-center"
+    >
+      Recent Listings
+    </h1>
+    <!-- Grid -->
+    <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
+      <!-- Cards -->
+      {% for listing in listings %}
+      <div class="lg:flex hover:shadow-lg transform transition-transform hover:scale-110">
+        <img
+          class="object-cover w-full h-56 rounded-lg lg:w-64"
+          src="media/{{ listing.image }}"
+          alt="product_img"
+        />
+
+        <div class="flex flex-col justify-between py-6 lg:mx-6">
+
+            <div class="flex flex-col justify-around gap-5">
+            <a
+                href="{% url 'listing' listing.id %}"
+                class="text-xl font-semibold text-gray-800 hover:underline dark:text-white"
+            >
+                {{listing.title}}
+            </a>
+
+            <!-- <p class="dark:text-white overflow-hidden" >{{ listing.description }}</p> -->
+
+            <p class="dark:text-white mb-2 mt-2">
+                Current Bid: ₹{{ listing.starting_value }}
+            </p>
+            </div>
+
+          {% if listing.auction_active %}
+
+          <p class="blink-green font-bold text-green-500">Active</p>
+
+          <button
+            class="w-[150px] middle none center mr-4 rounded-lg bg-green-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true"
+          >
+            <a href="{% url 'listing' listing.id %}"> Bid Now</a>
+          </button>
+
+          {% else %}
+
+          <p class=" font-bold text-red-500 blink-red">Expired</p>
+
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

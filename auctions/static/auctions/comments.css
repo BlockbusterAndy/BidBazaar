@@ -1,0 +1,57 @@
+.comment-section {
+    border-color: rgb(199, 199, 199);
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+
+    min-width: 50px;
+    max-width: 1000px;
+    width: 100%;
+    
+}
+
+.comment {
+    display: block;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-color:rgb(199, 199, 199);
+}
+
+.name {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.comment-description {
+    display: inline-block;
+}
+
+.comment-button {
+    color: white;
+    background-color: rgb(213, 43, 151);
+    border: none;
+    border-radius: 10px;
+    padding: 4px 10px;
+    opacity: 0.8;
+}
+
+.comment-input-section {
+    display: flex;
+}
+.comment-button:hover {
+    opacity: 0.9;
+}
+
+.comment-button:active {
+    opacity: 1;
+    
+}
+
+.comment-input {
+    margin-left: 10px;
+    outline: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex: 1;
+}
+

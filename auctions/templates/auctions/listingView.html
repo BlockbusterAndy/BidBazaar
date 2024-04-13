@@ -1,0 +1,69 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="d-inline-flex p-2 button-div">
+    {% if user_authenticated %}
+        <form action="{% url 'watch' listing.id %}" method="post">
+            {% csrf_token %}
+            {% if watch %}
+                <button class="btn btn-primary">Unwatch</button>
+            {% else %}
+                <button class="btn btn-primary">Watch</button>
+            {% endif %}
+        </form>
+    {% endif %}
+
+    {% if owner %}
+        <form action="{% url 'close_auction' listing.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary">Close</button>
+        </form>
+    {% endif %}
+</div>
+
+<h2>{{ listing.title }}</h2>
+
+<div>
+    {% if not active %}
+        <p> <span class="winner">{{ listing.winner }}</span> has won the auction!!!</p>
+    {% endif %}
+    <p>Category: {{ listing.category }}</p>
+    {% if listing.image %}
+        <img src="/media/{{ listing.image }}" class="listing-image">
+    {% endif %}
+    <p>Description: {{ listing.description }}</p>
+    <p>Owner: {{ listing.user }}</p>
+    <p>starting bid: £{{ listing.starting_value }}</p>
+    <p>current value: £{{ current_bid }}</p>
+</div>
+
+{% if not owner and  user_authenticated %}
+    {% if active %}
+    <form action="{% url 'bid' listing.id %}" method="post">
+        {% csrf_token %}
+        {% if error_message %}
+        <p class="error_message">{{ error_message }}</p>
+        {% endif %}
+        <input type="number" name="value" step="0.01" required>
+        <button class="comment-button">Bid</button>
+    </form>
+    {% endif %}
+{% endif %}
+
+{% if user_authenticated %}
+    <h4>Comment Section</h4>
+    <div class="comment-section">
+        {% for comment in comments %}
+            <div class="comment">
+                <p class="name">{{ comment.user }}: </p>
+                <p class="comment-description">{{ comment.comment }}</p>
+            </div>
+        {% endfor %}
+        <form action="{% url 'comment' listing.id %}" class="comment-input-section" method="post">
+            {% csrf_token %}
+            <input class="comment-input" type="Text" name="comment" required>
+            <button class="comment-button">send</button>
+        </form>
+    </div>
+{% endif %}
+{% endblock %}

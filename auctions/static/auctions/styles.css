@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.blink-green {
+    animation-name: blink-green;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+
+}
+
+@keyframes blink-green {
+    0% {
+        color: green;
+    }
+    50% {
+        color: white;
+    }
+    100%{
+        color: green;
+    }
+}
+
+.blink-red {
+    animation-name: blink-red;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
+
+}
+
+@keyframes blink-red {
+    0% {
+        color: rgb(211, 36, 36);
+    }
+    50% {
+        color: white;
+    }
+    100%{
+        color: rgb(211, 36, 36);
+    }
+}

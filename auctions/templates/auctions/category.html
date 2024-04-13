@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="bg-gray-100 dark:bg-gray-900 min-h-[100vh] pt-[10vh]">
+        <h2 class="text-3xl font-semibold mb-4 text-cyan-500  "> <a class = "hover:underline" href="{% url 'categories' %}" >Category</a> > {{ category }}</h2>
+
+        <h4 class="text-xl font-semibold mb-2 text-white">Active Listings</h4>
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for listing in active_listings %}
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                    <a class="block group" href="{% url 'listing' listing.id %}">
+                        <div class="image-row overflow-hidden">
+                            <img src="/media/{{ listing.image }}" alt="{{ listing.title }}" class="listing-image object-contain w-full h-40">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500">{{ listing.title }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Category: {{ listing.category }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Current Bid: £{{ listing.starting_value }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Status: {% if listing.auction_active %}Active{% else %}<span class="expired">Expired</span>{% endif %}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </section>
+
+        <h4 class="text-xl font-semibold my-4 text-red-600 ">Inactive Listings</h4>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for listing in inactive_listings %}
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                    <a class="block group" href="{% url 'listing' listing.id %}">
+                        <div class="image-row overflow-hidden">
+                            <img src="/media/{{ listing.image }}" alt="{{ listing.title }}" class="listing-image object-contain w-full h-40">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500">{{ listing.title }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Category: {{ listing.category }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Current Bid: £{{ listing.starting_value }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Status: {% if listing.auction_active %}Active{% else %}<span class="expired">Expired</span>{% endif %}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if listings %}
+        <h2>These are the listings that you have won:</h2>
+        <section class="listing-grid">
+            {% for listing in listings %}
+                <div>
+                    <a class="listing-title" href="{% url 'listing' listing.id %}">
+                        {{ listing.title }}
+                    </a>
+                    <div class="image-row">
+                        <img src="media/{{ listing.image }}" class="listing-image">
+                    </div>
+                    <div class="listing-info-row">
+                    </div>
+                    <div class="listing-details">
+                        <p class="category">
+                            Category: {{ listing.category }}
+                        </p>
+                        <p class="listing-current-value">
+                            Current Bid: £{{ listing.starting_value }}
+                        </p>
+                        <p class="listing-is-active">
+                            {% if listing.auction_active %}
+                                Active
+                            {% else %}
+                                <span class="expired">Expired</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    {% else %}
+
+    <div class="h-screen dark:bg-gray-900 flex justify-center items-center text-7xl">
+        <p>You have not won any Auctions !</p>
+    </div>
+    {% endif %}
+{% endblock %}

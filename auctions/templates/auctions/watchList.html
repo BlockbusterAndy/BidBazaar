@@ -1,0 +1,72 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watch List</h2>
+    <h4>Active Listings</h4>
+    <section class="listing-grid">
+        {% for listing in listings %}
+            {% if listing.auction_active %}
+                <div>
+                    <a class="listing-title" href="{% url 'listing' listing.id %}">
+                        {{ listing.title }}
+                    </a>
+                    <div class="image-row">
+                        <img src="media/{{ listing.image }}" class="listing-image">
+                    </div>
+                    <div class="listing-info-row">
+                    </div>
+                    <div class="listing-details">
+                        <p class="category">
+                            Category: {{ listing.category }}
+                        </p>
+                        <p class="listing-current-value">
+                            Current Bid: £{{ listing.starting_value }}
+                        </p>
+                        <p class="listing-is-active">
+                            {% if listing.auction_active %}
+                                Active
+                            {% else %}
+                                <span class="expired">Expired</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <h4>Inactive Listings</h4>
+    <section class="listing-grid">
+        {% for listing in listings %}
+            {% if not listing.auction_active %}
+                <div>
+                    <a class="listing-title" href="{% url 'listing' listing.id %}">
+                        {{ listing.title }}
+                    </a>
+                    <div class="image-row">
+                        <img src="media/{{ listing.image }}" class="listing-image">
+                    </div>
+                    <div class="listing-info-row">
+                    </div>
+                    <div class="listing-details">
+                        <p class="category">
+                            Category: {{ listing.category }}
+                        </p>
+                        <p class="listing-current-value">
+                            Current Bid: £{{ listing.starting_value }}
+                        </p>
+                        <p class="listing-is-active">
+                            {% if listing.auction_active %}
+                                Active
+                            {% else %}
+                                <span class="expired">Expired</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endblock %}
