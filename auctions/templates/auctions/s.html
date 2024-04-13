@@ -1,0 +1,90 @@
+{% extends "auctions/layout.html" %} {% block body %}
+<!-- component -->
+<section class="h-full w-full bg-gray-900 mt-[10vh]">
+    <div class="items-start justify-center px-4 py-12 md:flex md:px-6 2xl:px-20">
+    {% if listing.image %}
+      <div class="hidden w-80 md:block lg:w-2/5 xl:w-2/6">
+        <img class="w-full" alt="image of a girl posing" src="{% url 'close_auction' listing.id %}" />
+      </div>
+      <div class="md:hidden">
+        <img class="w-full" alt="image of a girl posing" src="{% url 'close_auction' listing.id %}" />
+      </div>
+    {% endif %}
+      <div class="mt-6 md:ml-6 md:mt-0 md:w-1/2 lg:ml-8 xl:w-2/5">
+        <div class="border-b border-gray-200 pb-6">
+          <p class="text-sm leading-none text-gray-600 dark:text-gray-300">Category : {{ listing.category }}</p>
+          <h1 class="mt-2 text-xl font-semibold leading-7 text-gray-800 lg:text-2xl lg:leading-6 dark:text-white">{{ listing.title }}</h1>
+        </div>
+        <div class="flex flex-col gap-2 border-b border-gray-200 py-4 text-white">
+          <strong>Item Description</strong>
+          <p class=" my-1" >{{ listing.description }}</p>
+          <p class=" my-1" ><strong>Owner:</strong>{{ listing.user }}</p>
+  
+        </div>
+  
+        <div class="flex justify-around border-b border-gray-200 py-4 text-gray-50">
+          <div class="flex justify-center text-center flex-col w-[40%] group relative overflow-hidden rounded px-2 py-2 border border-gray-100 bg-gray-200 text-sm font-medium text-slate-800 hover:text-violet-600 focus:outline-none focus:ring active:bg-indigo-600 active:text-white">
+            <span class="ease absolute left-0 top-0 h-0 w-0 border-t-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+              <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+            <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <p>Initial Price</p> <strong class=" text-blue-500 text-base">${{ listing.starting_value }}</strong>
+          </div>
+          <div class="flex justify-center text-center flex-col w-[40%] group relative overflow-hidden rounded px-2 py-2 border border-gray-100 bg-gray-200 text-sm font-medium text-slate-800 hover:text-violet-600 focus:outline-none focus:ring active:bg-indigo-600 active:text-white">
+            <span class="ease absolute left-0 top-0 h-0 w-0 border-t-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+              <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+            <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <p>Current Price</p> <strong class=" text-pink-700 text-base">${{ current_bid }}</strong>
+          </div>
+        </div>
+  
+        {% if not owner and  user_authenticated %}
+          {% if active %}
+              <!-- Input: Designation [h-12] & min-w-[12rem] -->
+              <form action="{% url 'bid' listing.id %}" method="post" class="flex flex-col gap-4 my-4 items-center">
+                {% csrf_token %}
+                <input class="h-12 min-w-[12rem] rounded-lg border-emerald-500 indent-4 text-emerald-900 shadow-lg focus:outline-none focus:ring focus:ring-emerald-600" type="text" 
+                placeholder="Place Your Bid"
+                name="value" type = "number" 
+                />
+                <!-- Button: Submit [h-12] -->
+                <button class="h-12 min-w-[8rem] rounded-lg border-2 border-emerald-600 bg-emerald-500 text-emerald-50 shadow-lg hover:bg-emerald-600 focus:outline-none focus:ring focus:ring-emerald-600">Bid</button>
+                <strong class="text-emerald-50" >OR</strong>
+              </form>
+              {% if user_authenticated %}
+                <form action="{% url 'watch' listing.id %}" method="post">
+                    {% csrf_token %}
+                  {% if watch %}
+                  <button class="h-12 min-w-[8rem] rounded-lg border-2 border-cyan-600 bg-cyan-500 text-emerald-50 shadow-lg hover:bg-cyan-600 focus:outline-none focus:ring focus:ring-blue-600">Add to<br>Watchlist</button>
+                  {% else %}
+                  <button class="h-12 min-w-[8rem] rounded-lg border-2 border-red-600 bg-red-500 text-red-50 shadow-lg hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-600">Remove from<br>Watchlist</button>
+                  {% endif %}
+                </form>
+              {% endif %}
+          {% else %}
+          <p>Item Expired</p>
+          {% endif %}
+        {% endif %}
+  
+        <div class="mt-4 text-white">
+          {% if user_authenticated %}
+            <h4>Comment Section</h4>
+            <div class="flex mt-2">
+            <div>
+                    {% for comment in comments %}
+                    <div class="m-4 text-white">
+                        <p>{{comment.user}}</p>
+                        <div class="rounded-xl border-2 border-sky-500 p-2 text-white">{{comment.comment}}</div>
+                    </div>
+                    {% endfor %}
+                    <div>
+        
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

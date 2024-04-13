@@ -1,69 +1,156 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% block body %}
+<!-- component -->
+<section class="h-[100vh] w-[100vw] bg-gray-900 mt-[10vh]">
 
-{% block body %}
-<div class="d-inline-flex p-2 button-div">
-    {% if user_authenticated %}
-        <form action="{% url 'watch' listing.id %}" method="post">
-            {% csrf_token %}
-            {% if watch %}
-                <button class="btn btn-primary">Unwatch</button>
-            {% else %}
-                <button class="btn btn-primary">Watch</button>
-            {% endif %}
-        </form>
-    {% endif %}
-
-    {% if owner %}
-        <form action="{% url 'close_auction' listing.id %}" method="post">
-            {% csrf_token %}
-            <button class="btn btn-primary">Close</button>
-        </form>
-    {% endif %}
-</div>
-
-<h2>{{ listing.title }}</h2>
-
-<div>
-    {% if not active %}
-        <p> <span class="winner">{{ listing.winner }}</span> has won the auction!!!</p>
-    {% endif %}
-    <p>Category: {{ listing.category }}</p>
-    {% if listing.image %}
-        <img src="/media/{{ listing.image }}" class="listing-image">
-    {% endif %}
-    <p>Description: {{ listing.description }}</p>
-    <p>Owner: {{ listing.user }}</p>
-    <p>starting bid: £{{ listing.starting_value }}</p>
-    <p>current value: £{{ current_bid }}</p>
-</div>
-
-{% if not owner and  user_authenticated %}
-    {% if active %}
-    <form action="{% url 'bid' listing.id %}" method="post">
-        {% csrf_token %}
-        {% if error_message %}
-        <p class="error_message">{{ error_message }}</p>
-        {% endif %}
-        <input type="number" name="value" step="0.01" required>
-        <button class="comment-button">Bid</button>
-    </form>
-    {% endif %}
-{% endif %}
-
-{% if user_authenticated %}
-    <h4>Comment Section</h4>
-    <div class="comment-section">
-        {% for comment in comments %}
-            <div class="comment">
-                <p class="name">{{ comment.user }}: </p>
-                <p class="comment-description">{{ comment.comment }}</p>
-            </div>
-        {% endfor %}
-        <form action="{% url 'comment' listing.id %}" class="comment-input-section" method="post">
-            {% csrf_token %}
-            <input class="comment-input" type="Text" name="comment" required>
-            <button class="comment-button">send</button>
-        </form>
+    {% if error_message %}
+    <div
+      id="error-alert"
+      class="flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700"
+      role="alert"
+    >
+      <svg
+        class="w-5 h-5 inline mr-3"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+      <div>
+        <span id="error-message" class="font-medium">{{ error_message }}</span> Bid higher than current price! <span id="countdown">30</span>
+      </div>
     </div>
-{% endif %}
+    {% endif %}
+
+    <div class="items-start justify-center px-4 py-12 md:flex md:px-6 2xl:px-20">
+    
+    {% if listing.image %}
+      <div class="hidden w-80 md:block lg:w-2/5 xl:w-2/6">
+        <img class="w-full" alt="image of a girl posing" src="/media/{{ listing.image }}" />
+      </div>
+      <div class="md:hidden">
+        <img class="w-full" alt="image of a girl posing" src="/media/{{ listing.image }}" />
+      </div>
+    {% endif %}
+      <div class="mt-6 md:ml-6 md:mt-0 md:w-1/2 lg:ml-8 xl:w-2/5">
+        <div class="border-b border-gray-200 pb-6">
+          <p class="text-sm leading-none text-gray-600 dark:text-gray-300">Category : {{ listing.category }}</p>
+          <h1 class="mt-2 text-xl font-semibold leading-7 text-gray-800 lg:text-2xl lg:leading-6 dark:text-white">{{ listing.title }}</h1>
+        </div>
+        <div class="flex flex-col gap-2 border-b border-gray-200 py-4 text-white">
+          <strong class="text-lg">Item Description</strong>
+          <p class=" my-1" >{{ listing.description }}</p>
+          <p class="text-lg my-1" ><strong>Owner: </strong>{{ listing.user }}</p>
+  
+        </div>
+  
+        <div class="flex justify-around border-b border-gray-200 py-4 text-gray-50">
+          <div class="flex justify-center text-center flex-col w-[40%] group relative overflow-hidden rounded px-2 py-2 border border-gray-100 bg-gray-200 text-sm font-medium text-slate-800 hover:text-violet-600 focus:outline-none focus:ring active:bg-indigo-600 active:text-white">
+            <span class="ease absolute left-0 top-0 h-0 w-0 border-t-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+              <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+            <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <p>Initial Price</p> <strong class=" text-blue-500 text-base">${{ listing.starting_value }}</strong>
+          </div>
+          <div class="flex justify-center text-center flex-col w-[40%] group relative overflow-hidden rounded px-2 py-2 border border-gray-100 bg-gray-200 text-sm font-medium text-slate-800 hover:text-violet-600 focus:outline-none focus:ring active:bg-indigo-600 active:text-white">
+            <span class="ease absolute left-0 top-0 h-0 w-0 border-t-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+              <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
+            <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
+            <p>Current Price</p> <strong class=" text-pink-700 text-base">${{ current_bid }}</strong>
+          </div>
+        </div>
+  
+        {% if not owner and  user_authenticated %}
+          {% if active %}
+            <div class="flex flex-col gap-4 my-4 items-center">
+              <!-- Input: Designation [h-12] & min-w-[12rem] -->
+              <form action="{% url 'bid' listing.id %}" method="post" class="">
+                {% csrf_token %}
+                <input class="h-12 min-w-[12rem] rounded-lg border-emerald-500 indent-4 text-emerald-900 shadow-lg focus:outline-none focus:ring focus:ring-emerald-600" type="text" 
+                placeholder="Place Your Bid"
+                name="value" type = "number" 
+                />
+                <!-- Button: Submit [h-12] -->
+                <button class="h-12 min-w-[8rem] rounded-lg border-2 border-emerald-600 bg-emerald-500 text-emerald-50 shadow-lg hover:bg-emerald-600 focus:outline-none focus:ring focus:ring-emerald-600">Bid</button>
+              </form>
+              {% if user_authenticated %}
+                <form action="{% url 'watch' listing.id %}" method="post">
+                    {% csrf_token %}
+                  {% if watch %}
+
+                    <button class="h-12 min-w-[8rem] rounded-lg border-2 border-red-600 bg-red-500 text-red-50 shadow-lg hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-600">Remove from<br>Watchlist</button>
+
+                  {% else %}
+                  
+                    <button class="h-12 min-w-[8rem] rounded-lg border-2 border-cyan-600 bg-cyan-500 text-emerald-50 shadow-lg hover:bg-cyan-600 focus:outline-none focus:ring focus:ring-blue-600">Add to<br>Watchlist</button>
+                  
+                  {% endif %}
+                </form>
+              {% endif %}
+            </div>
+          {% else %}
+          <p>Item Expired</p>
+          {% endif %}
+        {% endif %}
+
+        {% if user_authenticated %}
+      
+        <div class="flex flex-col mt-4">
+            <h4 class="text-white text-center text-2xl mt-4" >Comment Section</h4>
+            <div>
+                {% for comment in comments %}
+                <div class="m-4 text-white">
+                    <p>{{comment.user}}</p>
+                    <div class="rounded-xl border-2 border-sky-500 p-2 text-white">{{comment.comment}}</div>
+                </div>
+                {% endfor %}
+
+                <div>
+                    <form action="{% url 'comment' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <label for="chat" class="sr-only">Your Comment</label>
+                        <div class="flex items-center py-2 px-3 bg-gray-50 rounded-lg bg-transparent">
+                            <input id="comment" rows="1" class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Comment ..." type="Text" name="comment" required/>
+                                <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                <svg class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                            </button>
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var remainingTime = 30;
+          var countdownElement = document.getElementById('countdown');
+          var countdownInterval = setInterval(function() {
+            remainingTime--;
+            countdownElement.textContent = remainingTime;
+            if (remainingTime <= 0) {
+              clearInterval(countdownInterval);
+              var errorAlert = document.getElementById('error-alert');
+              if (errorAlert) {
+                errorAlert.classList.add('hidden');
+              }
+            }
+          }, 1000);
+        });
+    </script>
+      
+</section>
+<div class="h-[100vh] w-[100vw] bg-gray-900 pt-4 flex justify-end items-center">
+
+
+
+</div>
+
+
 {% endblock %}

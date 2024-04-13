@@ -1,26 +1,46 @@
-{% extends "auctions/layout.html" %} {% block body %}
-{% load static %}
+{% extends "auctions/layout.html" %} {% block body %} {% load static %}
 <!-- component -->
 <div class="dark:bg-gray-900 flex justify-center items-center h-screen">
   <!-- Left: Image -->
-    <div class=" w-1/2 h-screen hidden lg:block">
-        <img
-            src="{% static 'auctions/left-bg.png' %}"
-            alt="Placeholder Image"
-            class="object-cover w-full h-full"
-        />
-    </div>
-
+  <div
+    class="relative w-1/2 h-screen hidden lg:block flex justify-center items-center"
+  >
+    <p
+      class="absolute inset-0 flex flex-col z-10 text-xl text-center mt-[30vh]"
+    >
+      An Auction Platform for <br />
+      <strong>Collectors</strong>
+    </p>
+    <img
+      src="{% static 'auctions/left-bg.png' %}"
+      alt="Placeholder Image"
+      class="absolute object-fill w-full h-full z-0"
+    />
+  </div>
 
   <!-- Right: Login Form -->
   <div class="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-
     {% if message %}
-    <div class="flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700" role="alert">
-        <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-        <div>
-            <span class="font-medium">{{message}}</span> Change a few things up and try submitting again.
-        </div>
+    <div
+      class="flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700"
+      role="alert"
+    >
+      <svg
+        class="w-5 h-5 inline mr-3"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+      <div>
+        <span class="font-medium">{{message}}</span> Change a few things up and
+        try submitting again.
+      </div>
     </div>
     {% endif %}
 

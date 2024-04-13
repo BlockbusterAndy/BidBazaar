@@ -1,30 +1,115 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% block body %} {% load static %}
 
-{% block body %}
 
-    <h2>Register</h2>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'register' %}" method="post">
+<!-- component -->
+<div class="dark:bg-gray-900 flex justify-center items-center h-screen">
+    <!-- Left: Image -->
+    <div
+      class="relative w-1/2 h-screen hidden lg:block flex justify-center items-center"
+    >
+      <p
+        class="absolute inset-0 flex flex-col z-10 text-xl text-center mt-[30vh]"
+      >
+        An Auction Platform for <br />
+        <strong>Collectors</strong>
+      </p>
+      <img
+        src="{% static 'auctions/left-bg.png' %}"
+        alt="Placeholder Image"
+        class="absolute object-fill w-full h-full z-0"
+      />
+    </div>
+  
+    <!-- Right: Login Form -->
+    <div class="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
+      
+      {% if message %}
+      <div
+        class="flex bg-blue-100 rounded-lg p-4 mb-4 text-sm text-blue-700"
+        role="alert"
+      >
+        <svg
+          class="w-5 h-5 inline mr-3"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <div>
+          <span class="font-medium">{{message}}</span> Change a few things up and
+          try submitting again.
+        </div>
+      </div>
+      {% endif %}
+  
+      <h1 class="text-2xl font-semibold mb-4 text-white">Register</h1>
+      <form action="{% url 'register' %}" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        <!-- Email Input -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-400">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+            autocomplete="off"
+          />
         </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        <!-- Username Input -->
+        <div class="mb-4">
+          <label for="username" class="block text-gray-400">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+            autocomplete="off"
+            placeholder="Username"
+          />
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+        <!-- Password Input -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-400">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+            autocomplete="off"
+          />
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        <!-- Confirm Password Input -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-400">Password</label>
+          <input
+            type="password"
+            name="confirmation"
+            placeholder="Confirm Password"
+            class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+            autocomplete="off"
+          />
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
-    </form>
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+        <!-- Login Button -->
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+        >
+          Sign-up
+        </button>
+      </form>
+      <!-- Sign up  Link -->
+      <div class="mt-6 text-gray-400 text-center">
+        <p>Already have an account ? <a href="{% url 'login' %}" class=" text-blue-500 hover:underline">Login Here</a></p>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
