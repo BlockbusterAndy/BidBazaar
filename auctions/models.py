@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -14,6 +15,10 @@ class Listing(models.Model):
     auction_active = models.BooleanField(default=True)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="won", null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to="images/")
+    # end_time = models.DateTimeField(default=timezone.now)
+    
+    def is_active(self):
+        return self.auction_active and self.end_time > timezone.now()
 
 class Watch(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchList")

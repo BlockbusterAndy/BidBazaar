@@ -1,6 +1,6 @@
-{% extends "auctions/layout.html" %} {% block body %}
+{% extends "auctions/layout.html" %} {% block body %} {% load custom_filters %}
 <!-- component -->
-<section class="h-[100vh] w-[100vw] bg-gray-900 mt-[10vh]">
+<section class="h-[100vh] w-[100vw] bg-gray-900 pt-[12vh]">
 
     {% if error_message %}
     <div
@@ -54,17 +54,35 @@
               <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
             <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
             <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
-            <p>Initial Price</p> <strong class=" text-blue-500 text-base">${{ listing.starting_value }}</strong>
+            <p>Initial Price</p> <strong class=" text-blue-500 text-base">₹{{ listing.starting_value }}</strong>
           </div>
           <div class="flex justify-center text-center flex-col w-[40%] group relative overflow-hidden rounded px-2 py-2 border border-gray-100 bg-gray-200 text-sm font-medium text-slate-800 hover:text-violet-600 focus:outline-none focus:ring active:bg-indigo-600 active:text-white">
             <span class="ease absolute left-0 top-0 h-0 w-0 border-t-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
               <span class="ease absolute right-0 top-0 h-0 w-0 border-r-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
             <span class="ease absolute bottom-0 right-0 h-0 w-0 border-b-2 border-violet-600 transition-all duration-200 group-hover:w-full"></span>
             <span class="ease absolute bottom-0 left-0 h-0 w-0 border-l-2 border-violet-600 transition-all duration-200 group-hover:h-full"></span>
-            <p>Current Price</p> <strong class=" text-pink-700 text-base">${{ current_bid }}</strong>
+            <p>Current Price</p> <strong class=" text-pink-700 text-base">₹{{ current_bid }}</strong>
           </div>
         </div>
-  
+        <div class=" m-6 text-center">
+          <p class="text-white text-2xl">Current Highest Bidder: {% if highest_bidder %} <span>{{highest_bidder}}</span> {% else %} <span>No one has bid yet !</span> {% endif %}</p>
+        </div>
+        {% comment %} {% if listing.auction_active %}
+        <div class=" m-6 text-center">
+          <p class="text-white text-2xl">Remaining Time: <span id="remaining-time">{{ listing.remaining_time|timedelta_format }}</span></p>
+        </div>
+        {% endif %} {% endcomment %}
+
+        {% if owner and listing.auction_active %}
+        <div class="flex flex-col gap-4 my-4 items-center">
+          <form action="{% url 'close_auction' listing.id %}" method="post" class="">
+            {% csrf_token %}
+            <button class="h-12 min-w-[8rem] rounded-lg border-2 border-red-600 bg-red-500 text-red-50 shadow-lg hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-600">
+              Close Auction
+            </button>
+          </form>
+        </div>
+        {% endif %}
         {% if not owner and  user_authenticated %}
           {% if active %}
             <div class="flex flex-col gap-4 my-4 items-center">

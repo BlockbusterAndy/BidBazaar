@@ -6,6 +6,7 @@
 
         <h4 class="text-xl font-semibold mb-2 text-white">Active Listings</h4>
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% comment %} Cards  {% endcomment %}
             {% for listing in active_listings %}
                 <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
                     <a class="block group" href="{% url 'listing' listing.id %}">

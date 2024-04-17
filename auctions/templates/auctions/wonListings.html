@@ -1,41 +1,38 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <div class="bg-gray-100 dark:bg-gray-900 min-h-[100vh] flex flex-col gap-6 items-center justify-center">
+        <h1 class="text-gray-100 text-7xl poppins-extrabold">Won Auctions
+            <hr class=" ">
+        </h1>
     {% if listings %}
-        <h2>These are the listings that you have won:</h2>
-        <section class="listing-grid">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        
             {% for listing in listings %}
-                <div>
-                    <a class="listing-title" href="{% url 'listing' listing.id %}">
-                        {{ listing.title }}
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                    <a class="block group" href="{% url 'listing' listing.id %}">
+                        <div class="image-row overflow-hidden">
+                            <img src="/media/{{ listing.image }}" alt="{{ listing.title }}" class="listing-image object-cover w-full h-40 rounded-lg">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500">{{ listing.title }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400"> Category: {{ listing.category }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400"> Final Bid: ₹ {{ listing.starting_value }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 blink-green "> Congratulations You Won ! </p>
+                        </div>
                     </a>
-                    <div class="image-row">
-                        <img src="media/{{ listing.image }}" class="listing-image">
-                    </div>
-                    <div class="listing-info-row">
-                    </div>
-                    <div class="listing-details">
-                        <p class="category">
-                            Category: {{ listing.category }}
-                        </p>
-                        <p class="listing-current-value">
-                            Current Bid: £{{ listing.starting_value }}
-                        </p>
-                        <p class="listing-is-active">
-                            {% if listing.auction_active %}
-                                Active
-                            {% else %}
-                                <span class="expired">Expired</span>
-                            {% endif %}
-                        </p>
-                    </div>
                 </div>
             {% endfor %}
+
         </section>
+    </div>
     {% else %}
 
-    <div class="h-screen dark:bg-gray-900 flex justify-center items-center text-7xl">
-        <p>You have not won any Auctions !</p>
+    <div class="bg-gray-100 dark:bg-gray-900 min-h-[100vh] flex flex-col gap-6 items-center justify-center">
+        <h1 class="text-gray-100 text-4xl poppins-extrabold"> 
+            You have not won any auctions yet! 
+        </h1>
     </div>
+
     {% endif %}
 {% endblock %}

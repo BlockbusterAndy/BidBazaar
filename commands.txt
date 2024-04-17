@@ -1,0 +1,2 @@
+pip install apscheduler 
+pip install apscheduler django-apscheduler

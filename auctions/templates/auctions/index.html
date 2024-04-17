@@ -1,6 +1,61 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
-<section class="bg-white dark:bg-gray-900 pt-[10vh]">
+<section class="bg-white dark:bg-gray-900 pt-[10vh] min-h-[100vh] w-full">
+
+  <div class="container mx-auto px-4 py-8 text-gray-200">
+    <h1 class="text-4xl font-bold mb-8">Welcome to Bid Bazaar</h1>
+    <div class=" grid grid-cols-2 gap-4">
+
+      <div>
+      <p class="text-lg mb-6 font-medium text-gray-300">Your Premier Online Auction Destination</p>
+      <p class="text-lg mb-6 text-gray-400">Dive into a world of endless possibilities as you browse through our curated selectionof unique items, rare collectibles, and sought-after treasures. Whether you're a seasoned collector hunting for that elusive gem or a bargain hunter seeking unbeatable deals, Bid Bazaar has something for everyone.
+      </p>
+      </div>
+
+      <div>
+      <p class="text-lg mb-6 font-medium text-gray-300">Explore Our Auctions</p>
+      <p class="text-lg mb-6 text-gray-400">
+        Discover a diverse array of auctions featuring everything from vintage artifacts and exclusive memorabilia to cutting-edge tech gadgets and luxury goods. With new items added regularly, there's always something exciting to bid on at Bid Bazaar. Our user-friendly platform makes it easy to navigate, place bids, and track your favorite items, ensuring a seamless and enjoyable auction experience.
+      </p>
+      </div>
+
+      <div>
+      <p class="text-lg mb-6 font-medium text-gray-300">Bid with Confidence</p>
+      <p class="text-lg mb-6 text-gray-400">
+        At Bid Bazaar, we prioritize transparency, integrity, and security. Each item in our auctions is meticulously verified for authenticity, so you can bid with confidence knowing that you're getting the real deal. Our robust bidding system ensures fair and competitive auctions, giving everyone an equal chance to win their desired items at the best possible prices.
+      </p>
+      </div>
+
+      <div>
+      <p class="text-lg mb-6 font-medium text-gray-300">Sell Your Treasures</p>
+      <p class="text-lg mb-6 text-gray-400">
+        Got items gathering dust in your attic or closet? Turn your clutter into cash by selling on Bid Bazaar. Our seller-friendly platform makes it simple to list your items, attract potential buyers, and close lucrative deals. Join our community of sellers and start monetizing your treasures today.
+      </p>
+      </div>
+    </div>
+
+    {% if user.is_authenticated %}
+
+    <hr class="border-t-2 border-gray-300 my-8">
+
+    {% else %}
+
+    <div class="flex gap-4 justify-center my-4 items center">
+
+      <a href=""><button
+      class="w-[150px] h-[50px] middle none center mr-4 rounded-lg bg-cyan-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-cyan-500/20 transition-all hover:shadow-lg hover:shadow-cyan-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">
+      Login</button></a>
+
+      <a href=""><button
+      class="w-[150px] h-[50px] middle none center mr-4 rounded-lg bg-purple-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-cyan-purple/20 transition-all hover:shadow-lg hover:shadow-purple-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">
+      Register</button></a>
+
+    </div>
+
+    <hr class="border-t-2 border-gray-300 my-8">
+
+    {% endif %}
+
   <div class="container px-6 py-10 mx-auto">
     <h1
       class="text-3xl text-center font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white text-center"
@@ -31,20 +86,22 @@
             <!-- <p class="dark:text-white overflow-hidden" >{{ listing.description }}</p> -->
 
             <p class="dark:text-white mb-2 mt-2">
-                Current Bid: ₹{{ listing.starting_value }}
+                Current Bid: ₹ {{ listing.starting_value }}
             </p>
             </div>
 
           {% if listing.auction_active %}
 
-          <p class="blink-green font-bold text-green-500">Active</p>
+          <p class="blink-green font-bold my-2 text-green-500">Active</p>
 
+          <a href="{% url 'listing' listing.id %}">
           <button
             class="w-[150px] middle none center mr-4 rounded-lg bg-green-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             data-ripple-light="true"
           >
-            <a href="{% url 'listing' listing.id %}"> Bid Now</a>
+             Bid Now
           </button>
+          </a>
 
           {% else %}
 

@@ -1,15 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<section class="pt-[10vh]">
-    <h2>Create Listings</h2>
+<section class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col justify-center items-center pt-[12vh]">
 
-    <div class="form-group">
-        <form action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
+    <h2 class="text-gray-200 text-4xl font-bold mb-4">Create Listings</h2>
+
+        <form action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data" class="bg-gray-300 gap-2 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[80%]">
             {% csrf_token %}
             {{ form }}
-            <button class="btn btn-secondary" id="submit-button">Submit</button>
+            <div class=" mt-6 flex justify-center items-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-[40%]" id="submit-button">Submit</button>
+            </div>
         </form>
-    </div>
+
 </section>
 {% endblock %}

@@ -9,11 +9,14 @@ from django.db import connections
 from .models import User, Listing, Watch, Bid, Comment
 from .forms import ListingForm
 from .utils import *
+from django.utils import timezone
+from datetime import timedelta
 
 def index(request):
     listings = Listing.objects.filter(auction_active=True)
     for listing in listings:
         listing.starting_value = get_current_bid_value(listing.id)
+        # listing.remaining_time = max(listing.end_time - timezone.now(), timedelta(seconds=0))
     return render(request, "auctions/index.html", {
         "listings": listings
     })
@@ -95,6 +98,8 @@ def view_listing(request, listing_id, error_message=False):
     listing = Listing.objects.get(pk=listing_id)
     isActive = listing.auction_active
     current_bid = get_current_bid_value(listing_id)
+    highest_bidder = get_current_bidder(listing_id)
+    # listing.remaining_time = max(listing.end_time - timezone.now(), timedelta(seconds=0))
 
     user_authenticated = request.user.is_authenticated
     if (user_authenticated):    
@@ -112,7 +117,9 @@ def view_listing(request, listing_id, error_message=False):
             'current_bid': current_bid,
             'owner': isOwner,
             'active': isActive,
-            'comments': Comment.objects.filter(listing=listing)
+            'comments': Comment.objects.filter(listing=listing),
+            'highest_bidder': highest_bidder,
+            # 'remaining_time': listing.remaining_time,
         })
     else:
         return render(request, "auctions/listingView.html", {
@@ -123,7 +130,9 @@ def view_listing(request, listing_id, error_message=False):
             'owner': isOwner,
             'active': isActive,
             'comments': Comment.objects.filter(listing=listing),
-            'error_message': 'Your bid was too Low'
+            'highest_bidder': highest_bidder,
+            # 'remaining_time': listing.remaining_time,
+            'error_message': 'Your bid was too Low',
         })
 
 @login_required(redirect_field_name='index')

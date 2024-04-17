@@ -1,72 +1,37 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Watch List</h2>
-    <h4>Active Listings</h4>
-    <section class="listing-grid">
+
+<section class="bg-gray-100 dark:bg-gray-900 min-h-[100vh] flex flex-col gap-6 items-center justify-center pt-[10vh]">
+    <h2 class="text-gray-100 text-7xl poppins-extrabold">Your Watch List</h2>
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for listing in listings %}
-            {% if listing.auction_active %}
-                <div>
-                    <a class="listing-title" href="{% url 'listing' listing.id %}">
-                        {{ listing.title }}
-                    </a>
-                    <div class="image-row">
-                        <img src="media/{{ listing.image }}" class="listing-image">
+
+            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
+                <a class="block group" href="{% url 'listing' listing.id %}">
+                    <div class="image-row overflow-hidden">
+                        <img src="/media/{{ listing.image }}" alt="{{ listing.title }}" class="listing-image object-cover w-full h-40 rounded-lg">
                     </div>
-                    <div class="listing-info-row">
-                    </div>
-                    <div class="listing-details">
-                        <p class="category">
-                            Category: {{ listing.category }}
-                        </p>
-                        <p class="listing-current-value">
-                            Current Bid: £{{ listing.starting_value }}
-                        </p>
-                        <p class="listing-is-active">
-                            {% if listing.auction_active %}
-                                Active
-                            {% else %}
-                                <span class="expired">Expired</span>
+                    <div class="p-4 flex flex-col gap-2">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500">{{ listing.title }}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Category: {{ listing.category }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Current Bid: ₹ {{ listing.starting_value }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Status: {% if listing.auction_active %} <span class="blink-green">Active</span> {% else %}<span class="blink-red">Expired</span>{% endif %}</p>
+                        <form action="{% url 'watch' listing.id %}" method="post">
+                            {% csrf_token %}
+                            {% if watch %}
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-[60%]">
+                                Unwatch
+                            </button>
                             {% endif %}
-                        </p>
+                        </form>
                     </div>
-                    </div>
-                </div>
-            {% endif %}
+                </a>
+            </div>
+
         {% endfor %}
     </section>
 
-    <h4>Inactive Listings</h4>
-    <section class="listing-grid">
-        {% for listing in listings %}
-            {% if not listing.auction_active %}
-                <div>
-                    <a class="listing-title" href="{% url 'listing' listing.id %}">
-                        {{ listing.title }}
-                    </a>
-                    <div class="image-row">
-                        <img src="media/{{ listing.image }}" class="listing-image">
-                    </div>
-                    <div class="listing-info-row">
-                    </div>
-                    <div class="listing-details">
-                        <p class="category">
-                            Category: {{ listing.category }}
-                        </p>
-                        <p class="listing-current-value">
-                            Current Bid: £{{ listing.starting_value }}
-                        </p>
-                        <p class="listing-is-active">
-                            {% if listing.auction_active %}
-                                Active
-                            {% else %}
-                                <span class="expired">Expired</span>
-                            {% endif %}
-                        </p>
-                    </div>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
-    </section>
+</section>
+
 {% endblock %}
