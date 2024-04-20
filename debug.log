@@ -899,3 +899,25 @@ Watching for file changes with StatReloader
 Not Found: /accounts/login/
 D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Bids for listing 11: <QuerySet []>
+No bids found for listing 11
+Bids for listing 11: <QuerySet [<Bid: Bid object (16)>]>
+Highest bidder for listing 11: jadhavaniket19
+Bids for listing 11: <QuerySet [<Bid: Bid object (16)>]>
+Highest bidder for listing 11: jadhavaniket19
+Bids for listing 11: <QuerySet [<Bid: Bid object (16)>]>
+Highest bidder for listing 11: jadhavaniket19
+Bids for listing 11: <QuerySet [<Bid: Bid object (16)>]>
+Highest bidder for listing 11: jadhavaniket19
+Bids for listing 14: <QuerySet []>
+No bids found for listing 14
+Bids for listing 14: <QuerySet []>
+No bids found for listing 14
+Bids for listing 13: <QuerySet []>
+No bids found for listing 13
+Not Found: /media/
+Not Found: /media/
+Bids for listing 15: <QuerySet []>
+No bids found for listing 15
+Not Found: /media/

@@ -29,7 +29,9 @@ SECRET_KEY = '6ps8j!crjgrxt34cqbqn7x&b3y%(fny8k8nh21+qa)%ws3fh!q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.69.221', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.69.221', 'localhost', '127.0.0.1','.vercel.app']
+
+WSGI_APPLICATION = 'api.wsgi.app'
 
 
 # Application definition
@@ -44,12 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-EXTERNAL_APPS = [
-    'django_otp', 
-    'django_otp.plugins.otp_totp',
-]
-
-INSTALLED_APPS += EXTERNAL_APPS
 
 
 MIDDLEWARE = [
@@ -140,6 +136,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
