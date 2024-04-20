@@ -55,9 +55,9 @@
                         <p>Welcome !</p>
                         <strong>{{user.username}}</strong>
                     </div>
-                    <a class="flex text-gray-600 cursor-pointer transition-colors duration-300 font-semibold text-blue-600" href="#">
+                    <a class="flex text-gray-600 cursor-pointer transition-colors duration-300 font-semibold text-blue-600" href="{% url 'view_profile' %}">
                         <img src="{% static 'auctions/user-edit.svg' %}" alt="user" width="24" height="24" viewBox="0 0 24 24">
-                        <span class="ml-2">Edit Profile</span>
+                        <span class="ml-2">Profile</span>
                     </a>
                     <!-- Logout -->
                     <a class="flex text-gray-600 cursor-pointer transition-colors duration-300 font-semibold text-blue-600" href="{% url 'logout' %}">

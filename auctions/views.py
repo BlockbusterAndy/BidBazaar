@@ -346,3 +346,48 @@ def category(request, category):
         'active_listings': Listing.objects.filter(category=category, auction_active=True),
         'inactive_listings': Listing.objects.filter(category=category, auction_active=False)
     })
+
+@login_required
+def view_profile(request):
+    user = request.user
+    return render(request, "auctions/profile/view_profile.html", {'user': user})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.email = request.POST['email']
+        user.address = request.POST.get('address', '')  # Use get() method to handle cases where address is not provided
+
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            user.profile_picture = request.FILES['profile_picture']
+
+        user.save()
+        return HttpResponseRedirect(reverse('view_profile'))
+    return render(request, 'auctions/profile/edit_profile.html', {'user': request.user})
+
+
+@login_required
+def edit_password(request):
+    if request.method == 'POST':
+        user = request.user
+        original_password = request.POST['original_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+        
+        # Check if the original password provided by the user is correct
+        if authenticate(username=user.username, password=original_password):
+            # Check if the new password and confirmation match
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                return HttpResponseRedirect(reverse('view_profile'))
+            else:
+                return render(request, 'auctions/profile/edit_password.html', {'error': 'New passwords do not match'})
+        else:
+            return render(request, 'auctions/profile/edit_password.html', {'error': 'Invalid original password'})
+
+    return render(request, 'auctions/profile/edit_password.html')

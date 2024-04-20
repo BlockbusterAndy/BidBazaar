@@ -34,7 +34,3 @@ def get_current_bidder(listing_id):
     else:
         logger.info("No bids found for listing %d", listing_id)
         return None
-
-
-    
-mail_template = f"""  """

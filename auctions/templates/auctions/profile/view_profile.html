@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+<section class=" dark:bg-gray-900 w-[100vw] min-h-[100vh] pt-[10vh]">
+    <div class="container mx-auto py-8">
+        <h1 class="text-gray-200 text-2xl font-bold mb-4">User Profile</h1>
+
+        
+
+        <div class=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="flex flex-col justify-center items-center">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="w-36 h-36 rounded-full">
+                {% else %}
+                    <img src="{% static 'auctions/default_pfp.svg' %}" alt="Default Profile Picture" class="w-36 h-36 rounded-full">
+                {% endif %}
+            </div>
+            <p class="mb-4"><strong>Username:</strong> {{ user.username }}</p>
+            <p class="mb-4"><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p class="mb-4"><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p class="mb-4"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="mb-4"><strong>Address:</strong> {{ user.address }}</p>
+        </div>
+
+        <div class="flex justify-around">
+            <a href="{% url 'edit_profile' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit Profile</a>
+            <a href="{% url 'edit_password' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit Password</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

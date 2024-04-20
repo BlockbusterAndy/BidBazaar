@@ -4,7 +4,9 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    pass
+    address = models.CharField(max_length=255, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='images/', blank=True, null=True)
+    
 
 class Listing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
