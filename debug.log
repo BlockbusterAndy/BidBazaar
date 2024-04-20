@@ -921,3 +921,4 @@ Not Found: /media/
 Bids for listing 15: <QuerySet []>
 No bids found for listing 15
 Not Found: /media/
+Watching for file changes with StatReloader
