@@ -38,8 +38,7 @@
         ></path>
       </svg>
       <div>
-        <span class="font-medium">{{message}}</span> Change a few things up and
-        try submitting again.
+        <span class="font-medium">{{message}}</span>
       </div>
     </div>
     {% endif %}
@@ -73,7 +72,7 @@
       </div>
       <!-- Forgot Password Link -->
       <div class="mb-6 text-blue-500">
-        <a href="#" class="hover:underline">Forgot Password?</a>
+        <a href="{% url 'forgot_password' %}" class="hover:underline">Forgot Password?</a>
       </div>
       <!-- Login Button -->
       <button

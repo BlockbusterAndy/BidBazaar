@@ -2,6 +2,8 @@ from django.db.models import Max
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from .models import User, Listing, Watch, Bid
+from django.core.mail import send_mail
+from django.conf import settings
 
 def get_current_bid_value(listing_id):
     """
@@ -33,3 +35,6 @@ def get_current_bidder(listing_id):
         logger.info("No bids found for listing %d", listing_id)
         return None
 
+
+    
+mail_template = f"""  """

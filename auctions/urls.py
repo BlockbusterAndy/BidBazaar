@@ -17,5 +17,9 @@ urlpatterns = [
     path("listing/<int:listing_id>/watch/", views.watch, name="watch"),
     path("listing/<int:listing_id>/close/", views.close_auction, name="close_auction"),
     path("listing/<int:listing_id>/bid/", views.bid, name="bid"),
-    path("listing/<int:listing_id>/comment/", views.comment, name="comment")
+    path("listing/<int:listing_id>/comment/", views.comment, name="comment"),
+    path('otp-verification/', views.otp_verification, name='otp_verification'),
+    path('otp-success/', views.otp_success, name='otp_success'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('forgot-password-otp/', views.password_otp, name='password_otp'),
 ]

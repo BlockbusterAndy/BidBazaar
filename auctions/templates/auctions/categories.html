@@ -1,4 +1,4 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% load static %}
 
 {% block body %}
 
@@ -19,15 +19,47 @@
                         <div
                             class="absolute -top-20 lg:top-[-10%] left-[5%] z-40  group-hover:top-[-40%] group-hover:opacity-[0.9]   duration-300 w-[90%] h-48 bg-red-500 rounded-xl justify-items-center align-middle">
                             {% if category == 'Trading Cards' %}
-                            <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/trading-card-3955415-3275333.png?f=webp&w=256"
-                                class="w-36 h-36  mt-6 m-auto" alt="Automotive" title="Automotive" loading="lazy"
+
+                            <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/trading-cards-4202156-3479115.png?f=webp&w=256"
+                                class="w-36 h-36  mt-6 m-auto" alt="Trading Cards"  loading="lazy"
                                 width="200" height="200">
-                            {% elif category == 'Technology' %}
-                            <h2 class="w-36 h-36  mt-6 m-auto text-white text-2xl"> Technology </h2>
+
+                            {% elif category == 'Currency & Coins' %}
+
+                            <img src=" {% static "auctions/coins.svg" %} "
+                                class="w-36 h-36  mt-6 m-auto" alt="Currency & Coins"  loading="lazy"
+                                width="200" height="200">
+                            
+                            {% elif category == 'Comic Books' %}
+
+                            <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/comic-book-4595476-3806068.png?f=webp&w=256"
+                                class="w-36 h-36  mt-6 m-auto" alt="Comic Books" loading="lazy"
+                                width="200" height="200">
+
+                            {% elif category == 'Figurines' %}
+
+                            <img src=" {% static "auctions/figurine.svg" %} "
+                                class="w-36 h-36  mt-6 m-auto" alt="Comic Books" loading="lazy"
+                                width="200" height="200">
+
+                            {% elif category == 'Other' %}
+
+                            <img src=" {% static "auctions/other_icon.svg" %} "
+                                class="w-36 h-36  mt-6 m-auto" alt="Comic Books" loading="lazy"
+                                width="200" height="200">
+
+                            {% elif category == 'Collectibles' %}
+
+                            <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/gallery-artwork-11129775-9011199.png?f=webp&w=256"
+                                class="w-36 h-36  mt-6 m-auto" alt="Comic Books" loading="lazy"
+                                width="200" height="200">
+
                             {% else %}
+
                             <img src="https://epicpadprinting.com/public/img/indus/Automotive.png"
                                 class="w-36 h-36  mt-6 m-auto" alt="Automotive" title="Automotive" loading="lazy"
                                 width="200" height="200">
+
                             {% endif %}
                         </div>
                     </div>

@@ -3,14 +3,20 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Max
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.db import connections
 from .models import User, Listing, Watch, Bid, Comment
 from .forms import ListingForm
 from .utils import *
-from django.utils import timezone
-from datetime import timedelta
+# from django.utils import timezone
+# from datetime import timedelta
+import random
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+import time
+from django.template.loader import render_to_string
+
 
 def index(request):
     listings = Listing.objects.filter(auction_active=True)
@@ -48,30 +54,147 @@ def logout_view(request):
 
 
 def register(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirmation = request.POST.get('confirmation')
 
-        # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
-        if password != confirmation:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
+        # Basic validation
+        if password == confirmation:
+            # Generate OTP
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
+            request.session['username'] = username
+            request.session['email'] = email
+            request.session['password'] = password
+            
+            html_content = render_to_string('auctions/otp_mail.html', {'username': username, 'otp': otp})
 
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
+            # Send OTP via email
+            send_mail(
+                'Your Account Verification OTP',
+                'Use the following OTP to verify your account:',
+                'bidbazaar2024@gmail.com',  # Change this to your actual sender email address
+                [email],  # Add the recipient's email address to the recipient_list
+                html_message=html_content,  # Use HTML content for the email body
+                fail_silently=False,
+            )
+
+            # Redirect to OTP verification page
+            return redirect('otp_verification')
+        else:
+            return render(request, 'auctions/register.html', {'message': 'Passwords do not match'})
+
+    return render(request, 'auctions/register.html')
+
+def otp_verification(request):
+    if request.method == 'POST':
+        user_otp = request.POST.get('otp')
+        if int(user_otp) == request.session.get('otp', 0):
+            # Create user if OTP verification succeeds
+            user = User.objects.create(
+                username=request.session['username'],
+                email=request.session['email'],
+                password=make_password(request.session['password'])
+            )
             user.save()
-        except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request, "auctions/register.html")
+            # Set a session variable to indicate OTP verification success
+            request.session['otp_verified'] = True
+            return redirect('otp_success')  # Redirect to the success page
+        else:
+            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP'})
+    return render(request, 'auctions/otp_authentication.html')
+
+
+
+def otp_success(request):
+    # Redirect to login page after 5 seconds
+    time.sleep(5)
+    return redirect('login')
+
+def forgot_password(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        
+        # Check if user exists
+        user = User.objects.get(username=username, email=email)
+        
+        if user is not None:
+            # Generate OTP
+            otp = random.randint(100000, 999999)
+            
+            request.session['otp'] = otp
+            request.session['username'] = username
+            request.session['email'] = email
+            
+            html_content = render_to_string('auctions/forgot_password_mail.html', {'username': username, 'otp': otp})
+            # Send OTP via email
+            try:
+                send_mail(
+                    'Your Account Verification OTP',
+                    'Use the following OTP to verify your account:',
+                    'bidbazaar2024@gmail.com',
+                    [email],
+                    html_message=html_content,
+                    fail_silently=False,
+                )
+            except Exception as e:
+                return render(request, 'auctions/forgot_password.html', {'message': 'Failed to send email. Please try again later.'})
+            
+            return redirect('password_otp')
+        else:
+            return render(request, 'auctions/forgot_password.html', {'message': 'Invalid username and/or email.'})
+        
+    return render(request, 'auctions/forgot_password.html')
+
+def password_otp(request):
+    if request.method == 'POST':
+        user_otp = request.POST.get('otp')
+        
+        # Check if OTP is provided
+        if user_otp is None:
+            return render(request, 'auctions/otp_authentication.html', {'error': 'OTP is required'})
+        
+        # Check if OTP is a valid integer
+        try:
+            otp = int(user_otp)
+        except ValueError:
+            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP format'})
+        
+        # Check OTP against session OTP
+        if otp == request.session.get('otp', 0):
+            # Set a session variable to indicate OTP verification success
+            request.session['otp_verified'] = True
+            
+            username = request.session['username']
+            email = request.session['email']
+            
+            # Generate a new password
+            password = User.objects.make_random_password()
+            user = User.objects.get(username=username, email=email)
+            user.set_password(password)
+            user.save()
+            
+            html_content = render_to_string('auctions/new_password_mail.html', {'username': username, 'password': password})
+            
+            send_mail(
+                'Your Account Verification OTP',
+                'Use the following OTP to verify your account:',
+                'bidbazaar2024@gmail.com',
+                [email],
+                html_message=html_content,
+                fail_silently=False,
+            )
+            
+            return redirect('otp_success')  # Redirect to the success page
+        else:
+            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP'})
+        
+    return render(request, 'auctions/otp_authentication.html')
+
+
 
 @login_required(redirect_field_name='index')
 def create_listing(request):
