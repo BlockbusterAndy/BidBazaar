@@ -17,9 +17,6 @@
         "src": "/(.*)",
         "dest": "commerce/wsgi.py"
       }
-    ],
-    "env": {
-      "DJANGO_SECRET_KEY": "@django_secret_key"
-    }
+    ]
   }
   
