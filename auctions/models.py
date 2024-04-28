@@ -17,10 +17,13 @@ class Listing(models.Model):
     auction_active = models.BooleanField(default=True)
     winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="won", null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to="images/")
-    # end_time = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
     
-    def is_active(self):
-        return self.auction_active and self.end_time > timezone.now()
+    def save(self, *args, **kwargs):
+        if not self.created_at.tzinfo:
+            self.created_at = timezone.make_aware(self.created_at)
+        super().save(*args, **kwargs)
+    
 
 class Watch(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchList")
@@ -32,8 +35,20 @@ class Bid(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
     value = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def save(self, *args, **kwargs):
+        if not self.created_at.tzinfo:
+            self.created_at = timezone.make_aware(self.created_at)
+        super().save(*args, **kwargs)
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    listing = listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
     comment = models.CharField(max_length=512)
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def save(self, *args, **kwargs):
+        if not self.created_at.tzinfo:
+            self.created_at = timezone.make_aware(self.created_at)
+        super().save(*args, **kwargs)

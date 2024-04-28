@@ -1,20 +1,20 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
-from django.db.models import Max
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required,user_passes_test
+from django.db.models import Count, Q
+from django.http import  HttpResponseRedirect, Http404, HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db import connections
 from .models import User, Listing, Watch, Bid, Comment
 from .forms import ListingForm
 from .utils import *
-# from django.utils import timezone
+from django.utils import timezone
 # from datetime import timedelta
 import random
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password
-import time
+import time, datetime, calendar
 from django.template.loader import render_to_string
 
 
@@ -35,6 +35,11 @@ def login_view(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
+        
+        if username == 'admin' and user is not None:
+            login(request,user)
+            return HttpResponseRedirect(reverse("admin_view"))
+            
 
         # Check if authentication successful
         if user is not None:
@@ -198,24 +203,28 @@ def password_otp(request):
 
 @login_required(redirect_field_name='index')
 def create_listing(request):
-    if not(request.user.is_authenticated):
+    if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
 
     if request.method == "POST":
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
-            listing = Listing(user=request.user, title=form.cleaned_data["title"], category=form.cleaned_data["category"], description=form.cleaned_data["description"], starting_value=form.cleaned_data["starting_value"], image=form.cleaned_data["image"])
+            listing = Listing(
+                user=request.user,
+                title=form.cleaned_data["title"],
+                category=form.cleaned_data["category"],
+                description=form.cleaned_data["description"],
+                starting_value=form.cleaned_data["starting_value"],
+                image=form.cleaned_data["image"]
+            )
             listing.save()
-            return HttpResponseRedirect(reverse("index"))
+            message = f"Your listing {listing.title} has been created successfully."
+            messages.success(request, message)
+            return redirect("index")
         else:
-            return render(request, "auctions/createListing.html", {
-                'form': form
-            })
-        
+            return render(request, "auctions/createListing.html", {'form': form})
 
-    return render(request, "auctions/createListing.html", {
-        'form': ListingForm
-    })
+    return render(request, "auctions/createListing.html", {'form': ListingForm})
 
 def view_listing(request, listing_id, error_message=False):
     listing = Listing.objects.get(pk=listing_id)
@@ -391,3 +400,138 @@ def edit_password(request):
             return render(request, 'auctions/profile/edit_password.html', {'error': 'Invalid original password'})
 
     return render(request, 'auctions/profile/edit_password.html')
+
+def is_superuser(user):
+    return user.is_superuser
+
+@user_passes_test(is_superuser, login_url='/forbidden/')
+def admin_view(request):
+    
+    users = User.objects.all()
+    listings = Listing.objects.all()
+    total_users = User.objects.count()
+    total_listings = Listing.objects.count()
+    active_listings = Listing.objects.filter(auction_active=True).count()
+    inactive_listings = Listing.objects.filter(auction_active=False).count()
+            
+    context = {
+        'users': users,
+        'listings': listings,
+        'total_users': total_users,
+        'total_listings': total_listings,
+        'active_listings': active_listings,
+        'inactive_listings': inactive_listings,
+    }
+    return render(request, 'auctions/admin/admin_dashboard.html', context)
+
+@user_passes_test(is_superuser, login_url='/forbidden/')
+def manage_users(request):
+    users = User.objects.all()
+    return render(request, 'auctions/admin/manage_users.html', {'users': users})
+
+@user_passes_test(is_superuser, login_url='/forbidden/')
+def manage_listings(request):
+    listings = Listing.objects.all()
+    query = request.GET.get('q')
+    if query:
+        # Filter listings based on title or description containing the search query
+        listings = Listing.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+    else:
+        listings = Listing.objects.all()
+    return render(request, 'auctions/admin/manage_listings.html', {'listings': listings})
+
+def deactivate_listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    if request.method == 'POST':
+        listing.auction_active = False
+        listing.save()
+        return redirect('manage_listings')  # Redirect to admin dashboard or any other desired page
+    # Handle GET request if needed
+
+def delete_listing(request, listing_id):
+    try:
+        listing = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        raise Http404("Listing does not exist")
+    
+    if request.method == 'POST':
+        listing.delete()
+        return redirect('manage_listings')  # Redirect to admin dashboard or any other desired page
+    # Handle GET request if needed
+
+def reports(request):
+    # User Reports
+    # Data for user-wise listings
+    user_wise_listings = (
+        User.objects.annotate(total_listings=Count('listings'))
+        .values('username', 'total_listings')
+    )
+    
+    # Data for user registration reports
+    today = timezone.now().date()
+    last_seven_days = today - timezone.timedelta(days=6)
+    user_registration_data = (
+        User.objects.filter(date_joined__date__range=[last_seven_days, today])
+        .values('date_joined__date')
+        .annotate(total_registrations=Count('id'))
+    )
+    
+    # Data for user registration reports (last 3 months)
+    this_month = today.replace(day=1)
+    last_three_months = [this_month - timezone.timedelta(days=i*30) for i in range(3)]
+    
+    user_registration_data_3_months = (
+        User.objects.filter(date_joined__date__range=[last_three_months[2], today])
+        .values('date_joined__month')
+        .annotate(total_registrations=Count('id'))
+    )
+    
+    # Listings created in the last 7 days
+    today = timezone.now().date()
+    last_week = today - timezone.timedelta(days=6)
+    day_wise_listings = (
+        Listing.objects.filter(created_at__date__range=[last_week, today])
+        .values('created_at__date')
+        .annotate(count=Count('id'))
+    )
+    
+    # Listings created in the last 3 months
+    this_month = today.replace(day=1)
+    last_three_months = [this_month - timezone.timedelta(days=i*30) for i in range(3)]
+    month_wise_listings = (
+        Listing.objects.filter(created_at__date__range=[last_three_months[2], today])
+        .values('created_at__month')
+        .annotate(count=Count('id'))
+    )
+    month_names = [calendar.month_name[month['created_at__month']] for month in month_wise_listings]
+    
+    # Data for category reports
+    category_data = (
+        Listing.objects.values('category')
+        .annotate(total_listings=Count('id'))
+        .order_by('-total_listings')
+    )
+    
+    #Bids Reports
+    most_bid_item = Listing.objects.annotate(num_bids=Count('bids')).order_by('-num_bids').first()
+    least_bid_item = Listing.objects.annotate(num_bids=Count('bids')).order_by('num_bids').first()
+    # Query to get the top bidders
+    top_bidders = User.objects.annotate(num_bids=Count('bids')).order_by('-num_bids')[:10]
+
+    context = {
+        'day_wise_listings': day_wise_listings,
+        'month_wise_listings': month_wise_listings,
+        'month_names': month_names,
+        'user_wise_listings': user_wise_listings,
+        'user_registration_data': user_registration_data,
+        'user_registration_data_3_months': user_registration_data_3_months,
+        'category_data': category_data,
+        'most_bid_item': most_bid_item,
+        'least_bid_item': least_bid_item,
+        'top_bidders': top_bidders,
+    }
+    
+    return render(request, 'auctions/admin/reports.html', context)
+
+def forbidden_view(request):
+    return render(request,"auctions/admin/forbidden.html")

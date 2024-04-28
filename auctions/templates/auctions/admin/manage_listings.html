@@ -1,0 +1,54 @@
+{% extends "auctions/admin/admin_layout.html" %}
+{% load static %}
+{% block body %}
+
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col">
+        <header class="bg-white border-b-2 border-gray-200 py-4">
+            <h1 class="text-lg text-center font-semibold"> BidBazaar Administration </h1>
+        </header>
+
+        <!-- Search Listings Form -->
+        <div class="my-4 flex items-center justify-center">
+            <form method="GET" action="{% url 'manage_listings' %}" class="mr-4 border-2 border-gray-500 rounded-xl p-2 w-[70vh] flex justify-between">
+                <input type="text" name="q" placeholder="Search listings" class="rounded-md text-center w-[60vh]">
+                <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600">Search</button>
+            </form>
+        </div>
+        <!-- Manage Listings Section -->
+        <div class="bg-white border rounded-lg p-4 shadow-lg mx-4 my-4">
+
+            <h2 class="text-lg font-semibold mb-2" id="manage_listing">Manage Listings</h2>
+            <ul class="grid grid-cols-2">
+                {% for listing in listings %}
+                <li>
+                    <div class="flex items-center bg-gray-100 border rounded-lg p-4 shadow-lg min-h-[40vh] my-2 mx-4 hover:shadow-lg transform transition-transform hover:scale-105">
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">{{ listing.title }}</div>
+                            <div class="text-sm text-gray-500">{{ listing.description }}</div>
+                            <div class="text-sm text-gray-500">Starting Value: ₹{{ listing.starting_value }}</div>
+                            <div class="text-sm text-gray-500">Category: {{ listing.category }}</div>
+                            <div class="text-sm text-gray-500"><strong>Auction Active: {% if listing.auction_active %} <span class="text-green-500">Yes</span>{% else %} <span class="text-red-500" >No</span> {% endif %}</strong></div>
+                            <div class="flex mt-2">
+                                <form action="{% url 'delete_listing' listing.id %}" method="post" class="mr-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600">Delete</button>
+                                </form>
+                                {% if listing.auction_active %}
+                                    <form action="{% url 'deactivate_listing' listing.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600">Deactivate</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+        </div>
+
+    </div>
+
+
+{% endblock %}

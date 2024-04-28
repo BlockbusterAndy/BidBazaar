@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="flex h-screen bg-gray-100">
+    <div class="m-auto text-center">
+        <h1 class="text-2xl font-bold text-red-500">403 - Forbidden</h1>
+        <p class="text-gray-700 mb-4">You do not have permission to view this page.</p>
+        <a href="{% url 'index' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Home</a>
+    </div>
+</div>
+{% endblock %}

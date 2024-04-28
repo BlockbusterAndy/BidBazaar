@@ -2,6 +2,14 @@
 
 <section class="bg-white dark:bg-gray-900 pt-[10vh] min-h-[100vh] w-full">
 
+  {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+
   <div class="container mx-auto px-4 py-8 text-gray-200">
     <h1 class="text-4xl font-bold mb-8">Welcome to Bid Bazaar</h1>
     <div class=" grid grid-cols-2 gap-4">
@@ -84,6 +92,7 @@
             </a>
 
             <!-- <p class="dark:text-white overflow-hidden" >{{ listing.description }}</p> -->
+            <p> Category : {{listing.category}} </p>
 
             <p class="dark:text-white mb-2 mt-2">
                 Current Bid: ₹ {{ listing.starting_value }}

@@ -1,0 +1,429 @@
+{% extends "auctions/admin/admin_layout.html" %}
+{% load static %}
+{% block body %}
+
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col">
+    <header class="bg-white border-b-2 border-gray-200 py-4">
+        <h1 class="text-lg text-center font-semibold"> BidBazaar Administration </h1>
+    </header>
+
+    <div class=" container grid grid-cols-2">
+
+        <div class=" mx-4 my-4 bg-white border rounded-lg p-4 shadow-lg">
+
+            <!-- User-wise Listings Table -->
+            <div class="my-4 ">
+                <div class="my-4">
+                <h2 class="text-center text-3xl font-bold mb-2">Users</h2>
+                </div>
+
+                <div class="my-4 border-2 border-black rounded-md">
+                    <h2 class="text-lg text-center font-semibold py-2 mb-2">User-wise Listings</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Username</th>
+                                    <th class="px-4 py-2">Total Listings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in user_wise_listings %}
+                                <tr>
+                                    <td class="border px-4 py-2">{{ user.username }}</td>
+                                    <td class="border px-4 py-2">{{ user.total_listings }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="my-4 border-2 border-black rounded-md">
+
+                <!-- User Registration Reports Table  -->
+                <div class="my-4">
+                    <h2 class="text-lg text-center font-semibold mb-2">User Registration Reports (Last 7 Days)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Date</th>
+                                    <th class="px-4 py-2">Total Registrations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in user_registration_data %}
+                                <tr>
+                                    <td class="border px-4 py-2">{{ data.date_joined__date }}</td>
+                                    <td class="border px-4 py-2">{{ data.total_registrations }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- User Registration Reports Chart -->
+                <div class="my-4">
+                    <h2 class="text-lg text-center font-semibold mb-2">User Registration Reports Chart (Last 7 Days)</h2>
+                    <canvas id="user-registration-chart" width="400" height="200"></canvas>
+                </div>
+
+            </div>
+
+            <div class="my-4 border-2 border-black">
+
+                <div class="my-4">
+                    <h2 class="text-lg text-center font-semibold mb-2">User Registration Reports Table (Last 3 Months)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Month</th>
+                                    <th class="px-4 py-2">Total Registrations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in user_registration_data_3_months %}
+                                <tr>
+                                    <td class="border px-4 py-2">{{ data.date_joined__month }}</td>
+                                    <td class="border px-4 py-2">{{ data.total_registrations }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="my-4">
+                    <h2 class="text-lg text-center font-semibold mb-2">User Registration Reports Chart (Last 3 Months)</h2>
+                    <canvas id="user-registration-chart-3-months" width="400" height="200"></canvas>
+                </div>
+
+            </div>
+
+            <script>
+                // User Registration Reports Chart
+                var userRegistrationCanvas = document.getElementById('user-registration-chart').getContext('2d');
+                var userRegistrationChart = new Chart(userRegistrationCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for data in user_registration_data %}
+                                "{{ data.date_joined__date }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Total Registrations',
+                            data: [
+                                {% for data in user_registration_data %}
+                                    {{ data.total_registrations }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                // User Registration Reports Chart (Last 3 Months)
+                var userRegistrationCanvas3Months = document.getElementById('user-registration-chart-3-months').getContext('2d');
+                var userRegistrationChart3Months = new Chart(userRegistrationCanvas3Months, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for data in user_registration_data_3_months %}
+                                "{{ data.date_joined__month }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Total Registrations',
+                            data: [
+                                {% for data in user_registration_data_3_months %}
+                                    {{ data.total_registrations }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+            </script>
+            
+
+        </div>
+
+        
+        <div class=" mx-4 my-4 bg-white border rounded-lg p-4 shadow-lg">
+
+            <div class="my-4">
+                <h1 class="text-center text-3xl font-bold "> Listings </h1>
+            </div>
+        
+        
+            <div class="my-4">
+
+                <div class="my-4 border-2 border-black rounded-md">
+                    <!-- Day-wise Listings Table -->
+                    <div class="my-4">
+                        <h2 class="text-lg text-center font-semibold mb-2">Day-wise Listings</h2>
+                        <div class="overflow-x-auto">
+                            <table class="table-auto w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2">Date</th>
+                                        <th class="px-4 py-2">Total Listings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for day in day_wise_listings %}
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ day.created_at__date|date }}</td>
+                                        <td class="border px-4 py-2">{{ day.count }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- Day-wise Listings Chart -->
+                    <h2 class="text-lg text-center font-semibold mb-2">Day-wise Listings Chart</h2>
+                    <canvas id="day-wise-chart" width="400" height="200"></canvas>
+                </div>
+
+                <div class="my-4 border-2 border-black rounded-md">
+                    <!-- Month-wise Listings Table -->
+                    <div class="my-4">
+                        <h2 class="text-lg text-center font-semibold mb-2">Month-wise Listings</h2>
+                        <div class="overflow-x-auto">
+                            <table class="table-auto w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-2">Month</th>
+                                        <th class="px-4 py-2">Total Listings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in month_wise_listings %}
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ month_names.i }}</td>
+                                        <td class="border px-4 py-2">{{ i.count }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+            
+                    <!-- Month-wise Listings Chart -->
+                    <h2 class="text-lg text-center font-semibold mb-2">Month-wise Listings Chart</h2>
+                    <canvas id="month-wise-chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <script>
+                // Day-wise Listings Chart
+                var dayWiseCanvas = document.getElementById('day-wise-chart').getContext('2d');
+                var dayWiseChart = new Chart(dayWiseCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for day in day_wise_listings %}
+                                "{{ day.created_at__date|date:'D' }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Total Listings',
+                            data: [
+                                {% for day in day_wise_listings %}
+                                    {{ day.count }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                // Month-wise Listings Chart
+                var monthWiseCanvas = document.getElementById('month-wise-chart').getContext('2d');
+                var monthWiseChart = new Chart(monthWiseCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for month_name in month_names %}
+                                "{{ month_name }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Total Listings',
+                            data: [
+                                {% for month in month_wise_listings %}
+                                    {{ month.count }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+            </script>
+
+        </div>
+
+        <!--  Category Wise Reports  -->
+        <div class=" mx-4 my-4 bg-white border rounded-lg p-4 shadow-lg">
+            <!-- Category Reports Table -->
+            <div class="my-4">
+                <h2 class="text-3xl text-center font-bold mb-2">Category</h2>
+                <div class="overflow-x-auto">
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">Category</th>
+                                <th class="px-4 py-2">Total Listings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in category_data %}
+                            <tr>
+                                <td class="border px-4 py-2">{{ data.category }}</td>
+                                <td class="border px-4 py-2">{{ data.total_listings }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bar Graph for Items in Each Category -->
+            <div class="my-4">
+                <canvas id="categoryBarChart" width="400" height="200"></canvas>
+            </div>
+
+            <script>
+                var ctx = document.getElementById('categoryBarChart').getContext('2d');
+                var categoryBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for data in category_data %}
+                                "{{ data.category }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Total Listings',
+                            data: [
+                                {% for data in category_data %}
+                                    {{ data.total_listings }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+
+        </div>
+
+        <div class=" mx-4 my-4 bg-white border rounded-lg p-4 shadow-lg ">
+
+            <div class="my-4">
+                <h1 class="text-center text-3xl font-bold "> Bids </h1>
+            </div>
+
+            <div class="my-4 ">
+
+                <h2 class="text-lg font-semibold mb-2">Most Bid Item</h2>
+                <div class="bg-white border rounded-lg p-4 shadow-lg my-2">
+                    <h3 class="text-lg font-semibold">{{ most_bid_item.title }}</h3>
+                    <p class="text-gray-600">Total Bids: {{ most_bid_item.num_bids }}</p>
+                    <p class="text-gray-600">Category: {{ most_bid_item.category }}</p>
+                    <!-- Add more details about the most bid item as needed -->
+                </div>
+
+                <h2 class="text-lg font-semibold mb-2">Least Bid Item</h2>
+                <div class="bg-white border rounded-lg p-4 shadow-lg my-2">
+                    <h3 class="text-lg font-semibold">{{ least_bid_item.title }}</h3>
+                    <p class="text-gray-600">Total Bids: {{ least_bid_item.num_bids }}</p>
+                    <p class="text-gray-600">Category: {{ least_bid_item.category }}</p>
+                    <!-- Add more details about the least bid item as needed -->
+                </div>
+
+                <h2 class="text-lg font-semibold mb-2">Top Bidders</h2>
+                <div class="bg-white border rounded-lg p-4 shadow-lg">
+                    <ul>
+                        {% for bidder in top_bidders %}
+                            <li> <strong> {{ bidder.username }} </strong> - {{ bidder.num_bids }} bids  </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

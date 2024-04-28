@@ -1,0 +1,43 @@
+{% extends "auctions/admin/admin_layout.html" %}
+{% load static %}
+{% block body %}
+
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col">
+    <header class="bg-white border-b-2 border-gray-200 py-4">
+        <h1 class="text-lg text-center font-semibold"> BidBazaar Administration </h1>
+    </header>
+
+    <!-- Manage Users Section -->
+    <div class=" mx-4 my-4 bg-white border rounded-lg p-4 shadow-lg">
+        <h2 class="text-lg font-semibold mb-2">Manage Users</h2>
+        <ul>
+            {% for user in users %}
+            <li class="my-4">
+                <div class="flex justify-between">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                      {% if user.profile_picture %}
+                          <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="h-8 w-8 rounded-full">
+                      {% else %}
+                          <img src="{% static 'auctions/default_pfp.svg' %}" alt="{{ user.username }}" class="h-8 w-8 rounded-full">
+                      {% endif %}
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">{{ user.username }}</div>
+                        <div class="text-sm text-gray-500">{{ user.email }}</div>
+                    </div>
+                  </div>
+                    
+                    <div>
+                      <button class="bg-gray-500 hover:bg-gray-300 hover:text-gray-900 text-white font-bold py-2 px-4 rounded"> View Profile </button>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+      </div>
+
+</div>
+
+{% endblock %}

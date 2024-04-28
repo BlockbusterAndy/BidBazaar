@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal min-h-[100vh]">
+
+    <div class="flex bg-gray-200">
+
+        <div class="min-h-[100vh] bg-gray-800 w-64 pt-10 pb-6 hidden sm:block static">
+
+            <div class="text-white px-8 fixed">
+
+                <a href="{% url 'admin_view' %}"><h1 class="text-lg font-semibold mb-6 cursor-pointer">Admin Dashboard</h1></a>
+
+                <div class="flex justify-center items-center bg-gray-200 py-4 mb-4">
+                    <img src="{% static 'auctions/logo.svg' %}" alt="Bid Bazaar Logo">
+                </div>
+
+                <ul class="space-y-2">
+
+                    <li>
+                        <a href="{% url "manage_users" %}" class="block py-2 px-4 text-white hover:bg-gray-700">Manage Users</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url "manage_listings" %}" class="block py-2 px-4 text-white hover:bg-gray-700">Manage Listings</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url "reports" %}" class="block py-2 px-4 text-white hover:bg-gray-700">Reports</a>
+                    </li>
+
+                    <li class=" font-bold hover:border-2 " >
+                        <a href="{% url 'logout' %}" class="block py-2 px-4 text-red-600 hover:bg-gray-200">Logout</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        {% block body %}
+        
+        {% endblock %}
+
+    </div>
+
+</body>
+
+</html>
