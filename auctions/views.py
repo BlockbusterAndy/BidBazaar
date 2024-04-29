@@ -39,18 +39,17 @@ def login_view(request):
         if username == 'admin' and user is not None:
             login(request,user)
             return HttpResponseRedirect(reverse("admin_view"))
-            
 
         # Check if authentication successful
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "auctions/login.html", {
+            return render(request, "auctions/authentication/login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
-        return render(request, "auctions/login.html")
+        return render(request, "auctions/authentication/login.html")
 
 
 def logout_view(request):
@@ -74,7 +73,7 @@ def register(request):
             request.session['email'] = email
             request.session['password'] = password
             
-            html_content = render_to_string('auctions/otp_mail.html', {'username': username, 'otp': otp})
+            html_content = render_to_string('auctions/mail/otp_mail.html', {'username': username, 'otp': otp})
 
             # Send OTP via email
             send_mail(
@@ -89,9 +88,9 @@ def register(request):
             # Redirect to OTP verification page
             return redirect('otp_verification')
         else:
-            return render(request, 'auctions/register.html', {'message': 'Passwords do not match'})
+            return render(request, 'auctions/authentication/register.html', {'message': 'Passwords do not match'})
 
-    return render(request, 'auctions/register.html')
+    return render(request, 'auctions/authentication/register.html')
 
 def otp_verification(request):
     if request.method == 'POST':
@@ -108,8 +107,8 @@ def otp_verification(request):
             request.session['otp_verified'] = True
             return redirect('otp_success')  # Redirect to the success page
         else:
-            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP'})
-    return render(request, 'auctions/otp_authentication.html')
+            return render(request, 'auctions/authentication/otp_authentication.html', {'error': 'Invalid OTP'})
+    return render(request, 'auctions/authentication/otp_authentication.html')
 
 
 
@@ -134,7 +133,7 @@ def forgot_password(request):
             request.session['username'] = username
             request.session['email'] = email
             
-            html_content = render_to_string('auctions/forgot_password_mail.html', {'username': username, 'otp': otp})
+            html_content = render_to_string('auctions/mail/forgot_password_mail.html', {'username': username, 'otp': otp})
             # Send OTP via email
             try:
                 send_mail(
@@ -146,13 +145,13 @@ def forgot_password(request):
                     fail_silently=False,
                 )
             except Exception as e:
-                return render(request, 'auctions/forgot_password.html', {'message': 'Failed to send email. Please try again later.'})
+                return render(request, 'auctions/authentication/forgot_password.html', {'message': 'Failed to send email. Please try again later.'})
             
             return redirect('password_otp')
         else:
-            return render(request, 'auctions/forgot_password.html', {'message': 'Invalid username and/or email.'})
+            return render(request, 'auctions/authentication/forgot_password.html', {'message': 'Invalid username and/or email.'})
         
-    return render(request, 'auctions/forgot_password.html')
+    return render(request, 'auctions/authentication/forgot_password.html')
 
 def password_otp(request):
     if request.method == 'POST':
@@ -160,13 +159,13 @@ def password_otp(request):
         
         # Check if OTP is provided
         if user_otp is None:
-            return render(request, 'auctions/otp_authentication.html', {'error': 'OTP is required'})
+            return render(request, 'auctions/authentication/otp_authentication.html', {'error': 'OTP is required'})
         
         # Check if OTP is a valid integer
         try:
             otp = int(user_otp)
         except ValueError:
-            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP format'})
+            return render(request, 'auctions/authentication/otp_authentication.html', {'error': 'Invalid OTP format'})
         
         # Check OTP against session OTP
         if otp == request.session.get('otp', 0):
@@ -182,7 +181,7 @@ def password_otp(request):
             user.set_password(password)
             user.save()
             
-            html_content = render_to_string('auctions/new_password_mail.html', {'username': username, 'password': password})
+            html_content = render_to_string('auctions/mail/new_password_mail.html', {'username': username, 'password': password})
             
             send_mail(
                 'Your Account Verification OTP',
@@ -193,13 +192,14 @@ def password_otp(request):
                 fail_silently=False,
             )
             
-            return redirect('otp_success')  # Redirect to the success page
+            return redirect('password_reset_success')  # Redirect to the success page
         else:
-            return render(request, 'auctions/otp_authentication.html', {'error': 'Invalid OTP'})
+            return render(request, 'auctions/authentication/otp_authentication.html', {'error': 'Invalid OTP'})
         
-    return render(request, 'auctions/otp_authentication.html')
+    return render(request, 'auctions/authentication/otp_authentication.html')
 
-
+def password_reset_success(request):
+    return render(request, 'auctions/authentication/password_reset_successful.html')
 
 @login_required(redirect_field_name='index')
 def create_listing(request):
@@ -317,20 +317,31 @@ def comment(request, listing_id):
 
 @login_required(redirect_field_name='index')
 def your_listings(request):
-    return render(request, "auctions/yourListings.html", {
-        'listings': Listing.objects.filter(user=request.user)
+    listings = Listing.objects.filter(user=request.user)
+    
+    for listing in listings:
+        listing.starting_value = get_current_bid_value(listing.id)
+    
+    return render(request, "auctions/profile/yourListings.html", {
+        'listings': listings,
     })
 
 @login_required(redirect_field_name='index')
 def won_listings(request):
-    return render(request, "auctions/wonListings.html", {
-        'listings': Listing.objects.filter(winner=request.user)
+    
+    listings = Listing.objects.filter(winner=request.user)
+    
+    for listing in listings:
+        listing.starting_value = get_current_bid_value(listing.id)
+    
+    return render(request, "auctions/profile/wonListings.html", {
+        'listings': listings,
     })
 
 @login_required(redirect_field_name='index')
 def watch_list(request):
     listings = Listing.objects.raw(f'SELECT * FROM auctions_listing, auctions_watch WHERE auctions_listing.id = auctions_watch.listing_id AND auctions_watch.user_id=%s', [request.user.id])
-    return render(request, "auctions/watchList.html", {
+    return render(request, "auctions/profile/watchList.html", {
         'listings': listings
     })
 
@@ -350,10 +361,19 @@ def categories(request):
     )
 
 def category(request, category):
+    active_listings = Listing.objects.filter(category=category, auction_active=True)
+    inactive_listings = Listing.objects.filter(category=category, auction_active=False)
+    
+    for listing in active_listings:
+        listing.starting_value = get_current_bid_value(listing.id)
+    
+    for listing in inactive_listings:
+        listing.starting_value = get_current_bid_value(listing.id)
+    
     return render(request, "auctions/category.html",{
         'category': category,
-        'active_listings': Listing.objects.filter(category=category, auction_active=True),
-        'inactive_listings': Listing.objects.filter(category=category, auction_active=False)
+        'active_listings': active_listings,
+        'inactive_listings': inactive_listings,
     })
 
 @login_required
@@ -402,6 +422,7 @@ def edit_password(request):
     return render(request, 'auctions/profile/edit_password.html')
 
 def is_superuser(user):
+    # Check if the user is a superuser
     return user.is_superuser
 
 @user_passes_test(is_superuser, login_url='/forbidden/')
@@ -440,14 +461,15 @@ def manage_listings(request):
         listings = Listing.objects.all()
     return render(request, 'auctions/admin/manage_listings.html', {'listings': listings})
 
+@user_passes_test(is_superuser, login_url='/forbidden/')
 def deactivate_listing(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
     if request.method == 'POST':
         listing.auction_active = False
         listing.save()
-        return redirect('manage_listings')  # Redirect to admin dashboard or any other desired page
-    # Handle GET request if needed
+        return redirect('manage_listings')
 
+@user_passes_test(is_superuser, login_url='/forbidden/')
 def delete_listing(request, listing_id):
     try:
         listing = Listing.objects.get(pk=listing_id)
@@ -459,6 +481,7 @@ def delete_listing(request, listing_id):
         return redirect('manage_listings')  # Redirect to admin dashboard or any other desired page
     # Handle GET request if needed
 
+@user_passes_test(is_superuser, login_url='/forbidden/')
 def reports(request):
     # User Reports
     # Data for user-wise listings

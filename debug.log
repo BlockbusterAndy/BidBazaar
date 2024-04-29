@@ -3686,3 +3686,308 @@ Bids for listing 10: <QuerySet []>
 No bids found for listing 10
 Bids for listing 10: <QuerySet []>
 No bids found for listing 10
+Watching for file changes with StatReloader
+Bids for listing 1: <QuerySet []>
+No bids found for listing 1
+Bids for listing 10: <QuerySet []>
+No bids found for listing 10
+Bids for listing 10: <QuerySet [<Bid: Bid object (1)>]>
+Highest bidder for listing 10: aniketjadhav19
+Bids for listing 10: <QuerySet [<Bid: Bid object (1)>]>
+Highest bidder for listing 10: aniketjadhav19
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /category/Figurines/
+Traceback (most recent call last):
+  File "C:\Users\Aniket\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Aniket\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\BidBazaar\commerce\auctions\views.py", line 355, in category
+    active_listings.starting_value = get_current_bid_value(active_listings.id)
+                                                           ^^^^^^^^^^^^^^^^^^
+AttributeError: 'QuerySet' object has no attribute 'id'
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+Bids for listing 8: <QuerySet []>
+No bids found for listing 8
+Bids for listing 8: <QuerySet [<Bid: Bid object (2)>]>
+Highest bidder for listing 8: aniketjadhav19
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Bids for listing 9: <QuerySet []>
+No bids found for listing 9
+Bids for listing 9: <QuerySet [<Bid: Bid object (3)>]>
+Highest bidder for listing 9: aniketjadhav19
+Importing BlpImagePlugin
+Importing BmpImagePlugin
+Importing BufrStubImagePlugin
+Importing CurImagePlugin
+Importing DcxImagePlugin
+Importing DdsImagePlugin
+Importing EpsImagePlugin
+Importing FitsImagePlugin
+Importing FliImagePlugin
+Importing FpxImagePlugin
+Image: failed to import FpxImagePlugin: No module named 'olefile'
+Importing FtexImagePlugin
+Importing GbrImagePlugin
+Importing GifImagePlugin
+Importing GribStubImagePlugin
+Importing Hdf5StubImagePlugin
+Importing IcnsImagePlugin
+Importing IcoImagePlugin
+Importing ImImagePlugin
+Importing ImtImagePlugin
+Importing IptcImagePlugin
+Importing JpegImagePlugin
+Importing Jpeg2KImagePlugin
+Importing McIdasImagePlugin
+Importing MicImagePlugin
+Image: failed to import MicImagePlugin: No module named 'olefile'
+Importing MpegImagePlugin
+Importing MpoImagePlugin
+Importing MspImagePlugin
+Importing PalmImagePlugin
+Importing PcdImagePlugin
+Importing PcxImagePlugin
+Importing PdfImagePlugin
+Importing PixarImagePlugin
+Importing PngImagePlugin
+Importing PpmImagePlugin
+Importing PsdImagePlugin
+Importing QoiImagePlugin
+Importing SgiImagePlugin
+Importing SpiderImagePlugin
+Importing SunImagePlugin
+Importing TgaImagePlugin
+Importing TiffImagePlugin
+Importing WebPImagePlugin
+Importing WmfImagePlugin
+Importing XbmImagePlugin
+Importing XpmImagePlugin
+Importing XVThumbImagePlugin
+Bids for listing 11: <QuerySet []>
+No bids found for listing 11
+Bids for listing 1: <QuerySet []>
+No bids found for listing 1
+Bids for listing 1: <QuerySet [<Bid: Bid object (4)>]>
+Highest bidder for listing 1: vishalgurdale2002
+Bids for listing 2: <QuerySet []>
+No bids found for listing 2
+Bids for listing 2: <QuerySet [<Bid: Bid object (5)>]>
+Highest bidder for listing 2: vishalgurdale2002
+Bids for listing 12: <QuerySet []>
+No bids found for listing 12
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\urls.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
+D:\Projects\BidBazaar\commerce\auctions\views.py changed, reloading.
+Watching for file changes with StatReloader
