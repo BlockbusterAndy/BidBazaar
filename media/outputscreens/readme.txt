@@ -1,0 +1,1 @@
+This folder is used to render images to readme.md file, this folder is not related to project.
