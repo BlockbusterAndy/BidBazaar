@@ -21,7 +21,7 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
 
 1. Clone the repository:
     ```
-    git clone https://github.com/blockbusterandy/bid-bazaar.git
+    git clone https://github.com/BlockbusterAndy/BidBazaar.git
     ```
 2. Install the required dependencies:
     ```
