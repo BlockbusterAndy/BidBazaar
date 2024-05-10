@@ -37,6 +37,7 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
     EMAIL_HOST_USER = 'youremail'
     EMAIL_HOST_PASSWORD = 'yourpassword'
     ```
+    If using the default email provided please check the spam mails in your email inbox.
 5. Start the development server:
     ```
     python manage.py runserver
