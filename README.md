@@ -35,6 +35,12 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
     ```
     python manage.py runserver
     ```
+5. Go to Commerce\settings.py and change email settings ( if using G-Mail setup app specific password )
+  ```
+  #Change with your own email and password
+  EMAIL_HOST_USER = 'youremail'
+  EMAIL_HOST_PASSWORD = 'yourpassword'
+  ```
 
 ## Output Screens
 
