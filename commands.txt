@@ -1,4 +1,0 @@
-
-pip install django-otp
-
-pip install django-two-factor-auth
