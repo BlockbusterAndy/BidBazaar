@@ -8,20 +8,20 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
 - **Product Listing**: Easy-to-use tools for sellers to create detailed and attractive product listings with high-quality images and descriptions.
 - **Product Management**: Dashboard for sellers to manage their listings, track bids, and view sale history.
 - **Real-time Bidding**: Dynamic real-time bidding system with instant updates on bid status and auction progress.
-- **User Feedback**: Systems for buyers to leave feedback and ratings on transactions and sellers.
+- **Custom Admin Dashboard**: Custom Admin Dashboard to manage the platform and view reports.
 
 ## Technologies Used
 
 - **Backend**: Django (Python web framework)
 - **Database**: SQLite (default database for Django)
-- **Frontend**: HTML, JavaScript, Tailwind CSS
+- **Frontend**: HTML, JavaScript, Tailwind CSS, Chart.js for reports
 - **Development Tools**: Visual Studio Code
 
 ## Installation
 
 1. Clone the repository:
     ```
-    git clone https://github.com/blockbusterandy/bid-bazaar.git
+    git clone https://github.com/BlockbusterAndy/BidBazaar.git
     ```
 2. Install the required dependencies:
     ```
@@ -31,7 +31,14 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
     ```
     python manage.py migrate
     ```
-4. Start the development server:
+4. Go to Commerce\settings.py and change email settings ( if using G-Mail setup app specific password ):
+    ```
+    #Change with your own email and password
+    EMAIL_HOST_USER = 'youremail'
+    EMAIL_HOST_PASSWORD = 'yourpassword'
+    ```
+    If using the default email provided please check the spam mails in your email inbox.
+5. Start the development server:
     ```
     python manage.py runserver
     ```
@@ -55,6 +62,9 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
 ![Listings Dashboard](media\outputscreens\managelisting.png)
 2. Reports
 ![Reports Dashboard](media\outputscreens\reports.png)
+
+### Admin Credentials 
+username - admin, password - admin
 
 ## Future Enhancements
 
