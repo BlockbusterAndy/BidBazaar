@@ -46,22 +46,22 @@ Welcome to Bid Bazaar, an innovative online auction platform that brings the exc
 ## Output Screens
 
  1. Home Page
- ![Home Page](media\outputscreens\HomePage.png)
+ ![Home Page](media/outputscreens/HomePage.png)
  2. Login Page
- ![Login Page](media\outputscreens\login.png)
+ ![Login Page](media/outputscreens/login.png)
  3. OTP Authentication
- ![OTP Page](media\outputscreens\OTP_Authentication.png)
+ ![OTP Page](media/outputscreens/OTP_Authentication.png)
  4. Listing
- ![Listing](media\outputscreens\ItemListing.png)
+ ![Listing](media/outputscreens/ItemListing.png)
  5. User Profile
- ![Profile Page](media\outputscreens\UserProfile.png)
+ ![Profile Page](media/outputscreens/UserProfile.png)
 
 ## Admin Dashboard
 
 1. Manage Listings
-![Listings Dashboard](media\outputscreens\managelisting.png)
+![Listings Dashboard](media/outputscreens/managelisting.png)
 2. Reports
-![Reports Dashboard](media\outputscreens\reports.png)
+![Reports Dashboard](media/outputscreens/reports.png)
 
 ### Admin Credentials 
 username - admin, password - admin
